@@ -1,10 +1,11 @@
 # WSButtons
 
-WSButtons是一个Swift Package，提供基于语义的按钮内容样式，适用于SwiftUI项目。
+WSButtons是一个Swift Package，提供基于语义的按钮内容样式，适用于SwiftUI项目。使用流畅的链式调用API，可以轻松创建各种样式的按钮。
 
 ## 功能特点
 
 - 基于语义的按钮设计（confirm、cancel、close等）
+- 流畅的链式调用API
 - 多种预设按钮样式（primary、secondary、destructive等）
 - 支持Apple风格的Material材质按钮
 - 可与标准SwiftUI Button组件无缝配合
@@ -45,125 +46,132 @@ import SwiftUI
 import WSButtons
 ```
 
-### 基本用法
+### 基本用法 - 图标按钮
 
-WSButtons不再是一个完整的按钮组件，而是提供按钮的内容样式。你需要将它与标准的SwiftUI `Button` 结合使用：
+默认情况下，WSButtons创建的是只包含图标的Material风格按钮：
 
 ```swift
-// 确认按钮
+// 确认按钮（默认Material风格）
 Button {
     // 处理点击事件
 } label: {
-    WSButton.confirm
+    WSButton.confirm()
 }
 
-// 取消按钮
+// 关闭按钮
 Button {
     // 处理点击事件
 } label: {
-    WSButton.cancel
-}
-
-// 删除按钮
-Button {
-    // 处理点击事件
-} label: {
-    WSButton.delete
+    WSButton.close()
 }
 ```
 
-### 自定义按钮
+### 链式调用设置样式
+
+你可以通过链式调用来改变按钮样式：
 
 ```swift
-// 使用语义函数创建按钮内容
+// 危险操作风格的删除按钮
 Button {
     // 处理点击事件
 } label: {
-    WSButton.semantic(.add, style: .tertiary)
+    WSButton.delete().destructive()
 }
 
-// 创建自定义文本按钮
+// 主要风格的确认按钮
 Button {
     // 处理点击事件
 } label: {
-    WSButton.custom("开始游戏")
+    WSButton.confirm().primary()
 }
 
-// 控制图标显示
+// 次要风格的编辑按钮
 Button {
     // 处理点击事件
 } label: {
-    WSButton.semantic(.edit, showIcon: false)
+    WSButton.edit().secondary()
 }
 ```
 
-### Material风格按钮
+### 添加文本内容
+
+你可以使用`.text()`方法来添加文本内容：
 
 ```swift
-// Material样式按钮
+// 添加默认文本
 Button {
     // 处理点击事件
 } label: {
-    WSButton.semantic(.confirm, style: .material)
+    WSButton.confirm().text()
 }
 
-// Material图标按钮
+// 自定义文本
 Button {
     // 处理点击事件
 } label: {
-    WSButton.icon(.close)
-}
-
-// 直接应用Material图标样式到任意图标
-Button {
-    // 处理点击事件
-} label: {
-    Image(systemName: "bell.fill")
-        .materialIconStyle()
+    WSButton.close().text("关闭窗口")
 }
 ```
 
-### 样式修饰器
+### 控制图标显示
 
-你也可以直接使用样式修饰器来应用按钮样式：
+使用`.icon()`方法控制是否显示图标：
 
 ```swift
-Button("确认") {
+// 不显示图标的按钮
+Button {
     // 处理点击事件
+} label: {
+    WSButton.add().text().icon(false)
 }
-.buttonStyle(.borderedProminent) // SwiftUI自带的按钮样式
+```
 
-Text("自定义样式")
-    .primaryStyle()   // WSButtons提供的样式修饰器
+### 组合调用
 
-HStack {
-    Image(systemName: "star.fill") 
-    Text("收藏")
+你可以组合多个方法来创建完全自定义的按钮：
+
+```swift
+// 自定义文本，主要样式，不显示图标
+Button {
+    // 处理点击事件
+} label: {
+    WSButton.custom("登录账号").primary().icon(false)
 }
-.secondaryStyle()
+
+// 添加项目按钮，次要样式，带默认图标
+Button {
+    // 处理点击事件
+} label: {
+    WSButton.add().secondary().text("添加项目")
+}
 ```
 
 ## 可用的预定义按钮
 
-- `WSButton.confirm` - 确认按钮
-- `WSButton.cancel` - 取消按钮
-- `WSButton.close` - 关闭按钮
-- `WSButton.delete` - 删除按钮
-- `WSButton.add` - 添加按钮
-- `WSButton.edit` - 编辑按钮
-- `WSButton.save` - 保存按钮
-- `WSButton.back` - 返回按钮
-- `WSButton.next` - 下一步按钮
+- `WSButton.confirm()` - 确认按钮
+- `WSButton.cancel()` - 取消按钮
+- `WSButton.close()` - 关闭按钮
+- `WSButton.delete()` - 删除按钮
+- `WSButton.add()` - 添加按钮
+- `WSButton.edit()` - 编辑按钮
+- `WSButton.save()` - 保存按钮
+- `WSButton.back()` - 返回按钮
+- `WSButton.next()` - 下一步按钮
+- `WSButton.custom(text)` - 自定义按钮
 
-## 可用的样式修饰器
+## 可用的样式方法
 
-- `.primaryStyle()` - 主要按钮样式
-- `.secondaryStyle()` - 次要按钮样式
-- `.tertiaryStyle()` - 第三级按钮样式
-- `.destructiveStyle()` - 危险操作按钮样式
-- `.plainStyle()` - 无样式
-- `.materialStyle()` - 材质风格样式
-- `.materialIconStyle()` - 材质图标样式
+- `.primary()` - 主要按钮样式
+- `.secondary()` - 次要按钮样式
+- `.tertiary()` - 第三级按钮样式
+- `.destructive()` - 危险操作按钮样式
+- `.plain()` - 无样式
+- `.material()` - 材质风格样式
+
+## 内容控制方法
+
+- `.text(String?)` - 添加文本（默认使用语义对应的文本）
+- `.icon(Bool)` - 控制是否显示图标
 
 ## 示例
 

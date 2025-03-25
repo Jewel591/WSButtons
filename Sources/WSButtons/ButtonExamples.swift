@@ -2,118 +2,123 @@ import SwiftUI
 
 /// 按钮使用示例
 public struct ButtonExamples: View {
-  @State private var showMessage = false
+    @State private var showMessage = false
 
-  public init() {}
+    public init() {}
 
-  public var body: some View {
-    VStack(spacing: 20) {
-      Group {
-        // 预定义样式
-        Text("预定义按钮样式")
-          .font(.headline)
-          .padding(.top)
+    public var body: some View {
+        VStack(spacing: 20) {
+            Group {
+                // 基本用法 - 图标按钮
+                Text("图标按钮（Material风格）")
+                    .font(.headline)
+                    .padding(.top)
 
-        // 使用预定义的按钮内容
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.confirm
-        }
+                HStack(spacing: 20) {
+                    Button {
+                        showMessage.toggle()
+                    } label: {
+                        WSButton.confirm().material()
 
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.cancel
-        }
+                    }
 
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.delete
-        }
+                    Button {
+                        showMessage.toggle()
+                    } label: {
+                        WSButton.add()
+                    }
 
-        // 自定义样式
-        Text("自定义按钮样式")
-          .font(.headline)
-          .padding(.top)
+                    Button {
+                        showMessage.toggle()
+                    } label: {
+                        WSButton.close()
+                    }
 
-        // 使用语义函数
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.semantic(.add, style: .tertiary)
-        }
+                    Button {
+                        showMessage.toggle()
+                    } label: {
+                        WSButton.delete()
+                    }
+                }
+                .padding()
+                .buttonStyle(.plain)
+                .background(Color.blue, in: .capsule)
 
-        // 自定义文本
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.custom("登录账号")
-        }
+                // 样式链式调用
+                Text("样式链式调用")
+                    .font(.headline)
+                    .padding(.top)
 
-        // 不显示图标
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.semantic(.edit, showIcon: false)
-        }
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.delete().destructive()
+                }
 
-        // 组合SwiftUI修饰符
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.custom("开始游戏")
-            .shadow(radius: 3)
-            .scaleEffect(1.1)
-        }
-      }
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.confirm().primary()
+                }
 
-      Divider().padding(.vertical)
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.edit().secondary()
+                }
 
-      Text("Material 风格按钮")
-        .font(.headline)
-        .padding(.bottom, 5)
+                // 添加文本内容
+                Text("带有文本的按钮")
+                    .font(.headline)
+                    .padding(.top)
 
-      Group {
-        // Material风格按钮
-        Button {
-          showMessage.toggle()
-        } label: {
-          WSButton.semantic(.confirm, style: .material)
-        }
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.confirm().text()
+                }
 
-        // Material图标按钮
-        HStack(spacing: 20) {
-          ForEach([WSButtonSemantic.close, .add, .delete, .edit], id: \.defaultText) { semantic in
-            Button {
-              showMessage.toggle()
-            } label: {
-              WSButton.icon(semantic)
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.delete().destructive().text()
+                }
+
+                // 自定义文本
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.close().text("关闭窗口")
+                }
+
+                // 组合调用
+                Text("组合调用示例")
+                    .font(.headline)
+                    .padding(.top)
+
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.custom("登录账号").primary().icon(false)
+                }
+
+                Button {
+                    showMessage.toggle()
+                } label: {
+                    WSButton.add().secondary().text("添加项目")
+                }
             }
-          }
+
+            if showMessage {
+                Text("按钮被点击了！")
+                    .foregroundStyle(.green)
+                    .padding()
+            }
         }
         .padding()
-
-        // 直接使用图标
-        Button {
-          showMessage.toggle()
-        } label: {
-          Image(systemName: "bell.fill")
-            .materialIconStyle()
-        }
-      }
-
-      if showMessage {
-        Text("按钮被点击了！")
-          .foregroundStyle(.green)
-          .padding()
-      }
     }
-    .padding()
-  }
 }
 
 #Preview {
-  ButtonExamples()
+    ButtonExamples()
 }
